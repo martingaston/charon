@@ -1,16 +1,20 @@
 package com.github.martingaston.application;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 public class Connection {
-    private Client client;
-    private byte[] request;
+    private ByteArrayInputStream in;
+    private ByteArrayOutputStream out;
     private int timesAwaitClientCalled = 0;
 
     public Connection(byte[] request) {
-        this.request = request;
+        in = new ByteArrayInputStream(request);
+        out = new ByteArrayOutputStream();
     }
 
     public byte[] received() {
-        return this.client.received();
+        return out.toByteArray();
     }
 
     public int awaitClientCalledXTimes() {
@@ -19,7 +23,6 @@ public class Connection {
 
     public Client awaitClient() {
         timesAwaitClientCalled += 1;
-        this.client = new Client(this.request);
-        return this.client;
+        return new Client(in, out);
     }
 }

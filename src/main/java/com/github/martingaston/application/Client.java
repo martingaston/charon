@@ -1,23 +1,26 @@
 package com.github.martingaston.application;
 
+import com.github.martingaston.application.communications.Receiver;
+import com.github.martingaston.application.communications.Sender;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class Client {
-    private byte[] in;
-    private byte[] out;
+    private Sender sender;
+    private Receiver receiver;
 
-    public Client(byte[] out) {
-        this.in = "".getBytes();
-        this.out = out;
+    public Client(InputStream in, OutputStream out) {
+        this.sender = new Sender(out);
+        this.receiver = new Receiver(in);
     }
 
-    public byte[] receive() {
-        return this.out;
+    public String receive() throws IOException {
+        return receiver.receive();
     }
 
-    public void send(byte[] response) {
-        this.in = response;
-    }
-
-    public byte[] received() {
-        return this.in;
+    public void send(String response) throws IOException {
+        sender.send(response);
     }
 }
