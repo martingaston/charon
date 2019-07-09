@@ -5,8 +5,8 @@ public class Connection {
     private byte[] request;
     private int timesAwaitClientCalled = 0;
 
-    public void setRequest(byte[] contents) {
-        this.request = contents;
+    public Connection(byte[] request) {
+        this.request = request;
     }
 
     public byte[] received() {
