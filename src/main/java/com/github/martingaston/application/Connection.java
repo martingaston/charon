@@ -1,25 +1,25 @@
 package com.github.martingaston.application;
 
-import java.nio.charset.StandardCharsets;
-
 public class Connection {
+    private Client client;
     private byte[] request;
     private int timesAwaitClientCalled = 0;
 
-    public void send(byte[] contents) {
+    public void setRequest(byte[] contents) {
         this.request = contents;
     }
 
     public byte[] received() {
-        String[] parsedRequest = new String(request, StandardCharsets.UTF_8).split("\r\n\r\n");
-        return ("HTTP/1.1 200 OK\r\n\r\n" + parsedRequest[1]).getBytes();
+        return this.client.received();
     }
 
     public int awaitClientCalledXTimes() {
         return timesAwaitClientCalled;
     }
 
-    public void awaitClient() {
+    public Client awaitClient() {
         timesAwaitClientCalled += 1;
+        this.client = new Client(this.request);
+        return this.client;
     }
 }

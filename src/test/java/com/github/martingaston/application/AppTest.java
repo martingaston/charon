@@ -19,8 +19,8 @@ class AppTest {
         byte[] request = "GET /echo_body\r\n\r\nsome body".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\n\r\nsome body".getBytes();
 
+        connection.setRequest(request);
         app.listen();
-        connection.send(request);
 
         assertThat(connection.received()).isEqualTo(response);
     }
@@ -31,8 +31,8 @@ class AppTest {
         byte[] request = "GET /echo_body\r\n\r\ni wanna dance with some body".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\n\r\ni wanna dance with some body".getBytes();
 
+        connection.setRequest(request);
         app.listen();
-        connection.send(request);
 
         assertThat(connection.received()).isEqualTo(response);
     }
@@ -40,7 +40,11 @@ class AppTest {
     @DisplayName("Will wait for a client to connect")
     @Test
     void waitsForClient() {
+        byte[] request = "GET /echo_body\r\n\r\nsome body".getBytes();
+
+        connection.setRequest(request);
         app.listen();
+
         assertThat(connection.awaitClientCalledXTimes()).isEqualTo(1);
     }
 }
