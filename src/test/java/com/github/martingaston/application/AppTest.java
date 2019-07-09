@@ -36,4 +36,11 @@ class AppTest {
 
         assertThat(connection.received()).isEqualTo(response);
     }
+
+    @DisplayName("Will wait for a client to connect")
+    @Test
+    void waitsForClient() {
+        app.listen();
+        assertThat(connection.awaitClientCalledXTimes()).isEqualTo(1);
+    }
 }

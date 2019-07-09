@@ -1,11 +1,10 @@
 package com.github.martingaston.application;
 
-import java.nio.charset.StandardCharsets;
-
 class App {
+  Connection connection;
 
   public App(Connection connection) {
-
+    this.connection = connection;
   }
 
   public static void main(String[] args) {
@@ -13,6 +12,6 @@ class App {
   }
 
   public void listen() {
-
+    connection.awaitClient();
   }
 }
