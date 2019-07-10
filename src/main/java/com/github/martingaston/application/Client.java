@@ -6,6 +6,7 @@ import com.github.martingaston.application.communications.Sender;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class Client {
     private Sender sender;
@@ -17,7 +18,11 @@ public class Client {
     }
 
     public String receive() throws IOException {
-        return receiver.receive();
+        return receiver.receiveLine();
+    }
+
+    public String receiveBody() throws IOException {
+        return new String(receiver.receiveWhileReady(), StandardCharsets.UTF_8);
     }
 
     public void send(String response) throws IOException {

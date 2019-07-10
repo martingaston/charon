@@ -9,14 +9,14 @@ import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("A Receiver class")
 class ReceiverTest {
-    @DisplayName("Can receive messages")
+    @DisplayName("Can receiveLine messages")
     @Test
     void canReceiveMessage() throws IOException {
         ByteArrayInputStream input = new ByteArrayInputStream("It was the best of times.\r\nIt was the worst of times.".getBytes());
         Receiver receiver = new Receiver(input);
 
-        assertThat(receiver.receive()).isEqualTo("It was the best of times.");
-        assertThat(receiver.receive()).isEqualTo("It was the worst of times.");
+        assertThat(receiver.receiveLine()).isEqualTo("It was the best of times.");
+        assertThat(receiver.receiveLine()).isEqualTo("It was the worst of times.");
 
     }
 

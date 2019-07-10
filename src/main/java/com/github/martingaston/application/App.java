@@ -22,11 +22,18 @@ class App {
   public void listen() throws IOException {
     Client client = connection.awaitClient();
 
+    String requestLine = client.receive();
+
     String headers = client.receive();
-    String emptyLine = client.receive();
-    String body = client.receive();
+    while (!headers.equals("")) {
+      headers = client.receive();
+    }
+
+    String body = client.receiveBody();
+    System.out.println(body);
     String response = "HTTP/1.1 200 OK\r\n\r\n" + body;
 
     client.send(response);
   }
 }
+
