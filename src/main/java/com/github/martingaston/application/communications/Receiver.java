@@ -18,22 +18,27 @@ public class Receiver {
     }
 
     public byte[] receiveWhileReady() throws IOException {
+        ArrayList<Byte> list = readWhileActive();
+        return convertToByteArray(list);
+    }
+
+    private ArrayList<Byte> readWhileActive() throws IOException {
         ArrayList<Byte> list = new ArrayList<>();
 
         int data;
-        while((data = buffered.read()) != -1) {
+        while(buffered.ready() && (data = buffered.read()) != -1) {
             list.add((byte) data);
-            if(!buffered.ready()) {
-                break;
-            }
         }
+        return list;
+    }
 
+    private byte[] convertToByteArray(ArrayList<Byte> list) {
         byte[] result = new byte[list.size()];
 
         for (int i = 0; i < list.size(); i++) {
             result[i] = list.get(i);
         }
-
+        
         return result;
     }
 }
