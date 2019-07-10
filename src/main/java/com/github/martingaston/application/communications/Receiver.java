@@ -27,19 +27,21 @@ public class Receiver {
         ArrayList<Byte> list = new ArrayList<>();
 
         int data;
-        while(buffered.ready() && (data = buffered.read()) != EOF) {
+        while (buffered.ready() && (data = buffered.read()) != EOF) {
             list.add((byte) data);
         }
+        
         return list;
     }
 
     private byte[] convertToByteArray(ArrayList<Byte> list) {
         byte[] result = new byte[list.size()];
 
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
+        int index = 0;
+        for (Byte current : list) {
+            result[index++] = current;
         }
-        
+
         return result;
     }
 }
