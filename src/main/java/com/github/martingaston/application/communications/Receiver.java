@@ -17,16 +17,17 @@ public class Receiver {
         return buffered.readLine();
     }
 
-    public byte[] receiveWhileReady() throws IOException {
+    public byte[] drainStream() throws IOException {
         ArrayList<Byte> list = readWhileActive();
         return convertToByteArray(list);
     }
 
     private ArrayList<Byte> readWhileActive() throws IOException {
+        final int EOF = -1;
         ArrayList<Byte> list = new ArrayList<>();
 
         int data;
-        while(buffered.ready() && (data = buffered.read()) != -1) {
+        while(buffered.ready() && (data = buffered.read()) != EOF) {
             list.add((byte) data);
         }
         return list;
