@@ -1,5 +1,6 @@
 package com.github.martingaston.application;
 
+import com.github.martingaston.application.transport.MockConnection;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ class AppTest {
         byte[] request = "GET /echo_body\r\n\r\nsome body".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\n\r\nsome body".getBytes();
 
-        var connection = new Connection(request);
+        var connection = new MockConnection(request);
         var app = new App(connection);
         app.listen();
 
@@ -27,7 +28,7 @@ class AppTest {
         byte[] request = "GET /echo_body\r\n\r\ni wanna dance with some body".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\n\r\ni wanna dance with some body".getBytes();
 
-        var connection = new Connection(request);
+        var connection = new MockConnection(request);
         var app = new App(connection);
         app.listen();
 
@@ -39,7 +40,7 @@ class AppTest {
     void waitsForClient() throws IOException {
         byte[] request = "GET /echo_body\r\n\r\nsome body".getBytes();
 
-        var connection = new Connection(request);
+        var connection = new MockConnection(request);
         var app = new App(connection);
         app.listen();
 
