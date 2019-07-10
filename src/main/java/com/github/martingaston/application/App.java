@@ -21,12 +21,25 @@ class App {
   }
 
   public void listen() throws IOException {
-    Client client = connection.awaitClient();
-    Request request = new Request(client);
+      while (true) {
+          Client client = connection.awaitClient();
+          Request request = new Request(client);
 
-    String response = "HTTP/1.1 200 OK\r\n\r\n" + request.body();
+          String response;
+          switch (request.method()) {
+              case "POST":
+                  response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: " + request.bodyLength() + "\r\n\r\n" + request.body();
+                  break;
+              case "HEAD":
+                  response = "HTTP/1.1 200 OK\r\n\r\n";
+                  break;
+              default:
+                  response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
+                  break;
+          }
 
-    client.send(response);
+          client.send(response);
+      }
   }
 }
 

@@ -3,12 +3,14 @@ package com.github.martingaston.application.http;
 import com.github.martingaston.application.Client;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Request {
     private String method;
     private String uri;
     private String version;
     private String body;
+    private int bodyLength;
 
     public Request(Client client) throws IOException {
         parseRequest(client);
@@ -37,6 +39,7 @@ public class Request {
 
     private void parseBody(Client client) throws IOException {
         this.body = client.receiveBody();
+        this.bodyLength = body.getBytes(StandardCharsets.UTF_8).length;
     }
 
     public String method() {
@@ -54,4 +57,6 @@ public class Request {
     public String body() {
         return this.body;
     }
+
+    public int bodyLength() { return this.bodyLength; }
 }
