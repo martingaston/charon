@@ -5,10 +5,10 @@ import com.github.martingaston.application.Client;
 import java.io.IOException;
 
 public class Request {
-    String method;
-    String uri;
-    String version;
-    String body;
+    private String method;
+    private String uri;
+    private String version;
+    private String body;
 
     public Request(Client client) throws IOException {
         parseRequestLine(client.receive());
@@ -23,22 +23,25 @@ public class Request {
     }
 
     public String method() {
-        return "POST";
+        return this.method;
     }
 
     public String uri() {
-        return "/echo_body";
+        return this.uri;
     }
 
     public String protocol() {
-        return "HTTP/1.1";
+        return this.version;
     }
 
     public String body() {
-        return "some body";
+        return this.body;
     }
 
     private void parseRequestLine(String requestLine) {
-
+        String[] separatedRequestLine = requestLine.split(" ");
+        this.method = separatedRequestLine[0];
+        this.uri = separatedRequestLine[1];
+        this.version = separatedRequestLine[2];
     }
 }

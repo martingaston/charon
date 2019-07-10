@@ -1,5 +1,6 @@
 package com.github.martingaston.application;
 
+import com.github.martingaston.application.http.Request;
 import com.github.martingaston.application.transport.Connection;
 import com.github.martingaston.application.transport.Server;
 
@@ -21,17 +22,9 @@ class App {
 
   public void listen() throws IOException {
     Client client = connection.awaitClient();
+    Request request = new Request(client);
 
-    String requestLine = client.receive();
-
-    String headers = client.receive();
-    while (!headers.equals("")) {
-      headers = client.receive();
-    }
-
-    String body = client.receiveBody();
-    System.out.println(body);
-    String response = "HTTP/1.1 200 OK\r\n\r\n" + body;
+    String response = "HTTP/1.1 200 OK\r\n\r\n" + request.body();
 
     client.send(response);
   }
