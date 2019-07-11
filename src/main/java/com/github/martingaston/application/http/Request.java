@@ -5,10 +5,10 @@ import com.github.martingaston.application.Client;
 import java.io.IOException;
 
 public class Request {
-    private String method;
-    private String uri;
-    private String version;
-    private String body;
+    private Verbs method;
+    private URI uri;
+    private Version version;
+    private Body body;
 
     public Request(Client client) throws IOException {
         parseRequest(client);
@@ -23,9 +23,9 @@ public class Request {
     private void parseRequestLine(Client client) throws IOException {
         String requestLine = client.receive();
         String[] separatedRequestLine = requestLine.split(" ");
-        this.method = separatedRequestLine[0];
-        this.uri = separatedRequestLine[1];
-        this.version = separatedRequestLine[2];
+        this.method = Verbs.from(separatedRequestLine[0]);
+        this.uri = URI.from(separatedRequestLine[1]);
+        this.version = Version.from(separatedRequestLine[2]);
     }
 
     private void stripHeaders(Client client) throws IOException {
@@ -36,22 +36,22 @@ public class Request {
     }
 
     private void parseBody(Client client) throws IOException {
-        this.body = client.receiveBody();
+        this.body = Body.from(client.receiveBody());
     }
 
-    public String method() {
+    public Verbs method() {
         return this.method;
     }
 
-    public String uri() {
+    public URI uri() {
         return this.uri;
     }
 
-    public String protocol() {
+    public Version protocol() {
         return this.version;
     }
 
-    public String body() {
+    public Body body() {
         return this.body;
     }
 }
