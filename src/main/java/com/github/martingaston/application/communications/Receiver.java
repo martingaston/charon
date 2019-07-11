@@ -17,28 +17,31 @@ public class Receiver {
         return buffered.readLine();
     }
 
-    public byte[] receiveWhileReady() throws IOException {
+    public byte[] drainStream() throws IOException {
         ArrayList<Byte> list = readWhileActive();
         return convertToByteArray(list);
     }
 
     private ArrayList<Byte> readWhileActive() throws IOException {
+        final int EOF = -1;
         ArrayList<Byte> list = new ArrayList<>();
 
         int data;
-        while(buffered.ready() && (data = buffered.read()) != -1) {
+        while (buffered.ready() && (data = buffered.read()) != EOF) {
             list.add((byte) data);
         }
+        
         return list;
     }
 
     private byte[] convertToByteArray(ArrayList<Byte> list) {
         byte[] result = new byte[list.size()];
 
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
+        int index = 0;
+        for (Byte current : list) {
+            result[index++] = current;
         }
-        
+
         return result;
     }
 }

@@ -22,7 +22,7 @@ public class Client {
     }
 
     public String receiveBody() throws IOException {
-        return new String(receiver.receiveWhileReady(), StandardCharsets.UTF_8);
+        return new String(receiver.drainStream(), StandardCharsets.UTF_8);
     }
 
     public void send(String response) throws IOException {

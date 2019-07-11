@@ -27,25 +27,25 @@ class RequestTest {
         @DisplayName("Will return a POST method")
         @Test
         void hasPostMethod() {
-            assertThat(request.method()).isEqualTo("POST");
+            assertThat(request.method()).isEqualTo(Verbs.POST);
         }
 
         @DisplayName("Will return a URI of /echo_body")
         @Test
         void hasEchoBodyURI() {
-            assertThat(request.uri()).isEqualTo("/echo_body");
+            assertThat(request.uri()).isEqualTo(URI.from("/echo_body"));
         }
 
         @DisplayName("Will return a HTTP method of HTTP/1.1")
         @Test
         void hasHttpMethod() {
-            assertThat(request.protocol()).isEqualTo("HTTP/1.1");
+            assertThat(request.protocol()).isEqualTo(Version.V1POINT1);
         }
 
         @DisplayName("Will return a body")
         @Test
         void returnsBody() {
-            assertThat(request.body()).isEqualTo("some body");
+            assertThat(request.body()).isEqualTo(Body.from("some body"));
         }
     }
 }

@@ -7,39 +7,38 @@ import com.github.martingaston.application.transport.Server;
 import java.io.IOException;
 
 class App {
-  private Server connection;
+    private Server connection;
 
-  public App(Server connection) {
-    this.connection = connection;
-  }
+    public App(Server connection) {
+        this.connection = connection;
+    }
 
-  public static void main(String[] args) throws IOException {
-      var connection = new Connection(5000);
-      var app = new App(connection);
+    public static void main(String[] args) throws IOException {
+        var connection = new Connection(5000);
+        var app = new App(connection);
 
-      app.listen();
-  }
+        app.listen();
+    }
 
-  public void listen() throws IOException {
-      while (true) {
-          Client client = connection.awaitClient();
-          Request request = new Request(client);
+    public void listen() throws IOException {
 
-          String response;
-          switch (request.method()) {
-              case "POST":
-                  response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: " + request.bodyLength() + "\r\n\r\n" + request.body();
-                  break;
-              case "HEAD":
-                  response = "HTTP/1.1 200 OK\r\n\r\n";
-                  break;
-              default:
-                  response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-                  break;
-          }
+        Client client = connection.awaitClient();
+        Request request = new Request(client);
 
-          client.send(response);
-      }
-  }
+        String response;
+        switch (request.method()) {
+            case POST:
+                response = "HTTP/1.1 200 OK\r\n\r\n" + request.body().toString();
+                break;
+            case HEAD:
+                response = "HTTP/1.1 200 OK\r\n\r\n";
+                break;
+            default:
+                response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
+                break;
+        }
+
+        client.send(response);
+    }
 }
 
