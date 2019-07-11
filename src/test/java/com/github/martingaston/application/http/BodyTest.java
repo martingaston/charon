@@ -18,4 +18,10 @@ class BodyTest {
     void returnsContents() {
         assertThat(Body.from("my new body").toString()).isEqualTo("my new body");
     }
+
+    @DisplayName("Can return its length")
+    @Test
+    void returnsLength() {
+        assertThat(Body.from("can anybody find me").contentLength()).isEqualTo(19);
+    }
 }
