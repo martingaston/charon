@@ -48,6 +48,19 @@ class AppTest {
         assertThat(connection.received()).isEqualTo(response);
     }
 
+    @DisplayName("GET /simple_get returns a 200 with no body")
+    @Test
+    void simpleGetReturns200WithNoBody() throws IOException {
+        byte[] request = "GET /simple_get HTTP/1.1\r\n\r\n".getBytes();
+        byte[] response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 0\r\n\r\n".getBytes();
+
+        var connection = new MockConnection(request);
+        var app = new App(connection, new RunOnce());
+        app.listen();
+
+        assertThat(connection.received()).isEqualTo(response);
+    }
+
     @DisplayName("Will wait for a client to connect")
     @Test
     void waitsForClient() throws IOException {
