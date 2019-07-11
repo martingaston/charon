@@ -9,9 +9,15 @@ import java.io.IOException;
 
 class App {
     private Server connection;
+    private Runner running;
 
     public App(Server connection) {
+        this(connection, new LiveRunning());
+    }
+
+    public App(Server connection, Runner running) {
         this.connection = connection;
+        this.running = running;
     }
 
     public static void main(String[] args) throws IOException {
@@ -22,13 +28,13 @@ class App {
     }
 
     public void listen() throws IOException {
+        while (running.isRunning()) {
+            Client client = connection.awaitClient();
+            Request request = new Request(client);
+            Response response = new Response(request);
 
-        Client client = connection.awaitClient();
-        Request request = new Request(client);
-        Response response = new Response(request);
-        String processedResponse = response.respond();
-
-        client.send(processedResponse);
+            client.send(response.respond());
+        }
     }
 }
 

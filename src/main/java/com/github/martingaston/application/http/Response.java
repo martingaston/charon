@@ -12,10 +12,10 @@ public class Response {
 
         switch (request.method()) {
             case POST:
-                response = "HTTP/1.1 200 OK\r\n\r\n" + request.body().toString();
+                response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: " + request.bodyContentLength() + "\r\n\r\n" + request.body().toString();
                 break;
             case HEAD:
-                response = "HTTP/1.1 200 OK\r\n\r\n";
+                response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: " + request.bodyContentLength() + "\r\n\r\n";
                 break;
             default:
                 response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
