@@ -1,6 +1,7 @@
 package com.github.martingaston.application;
 
 import com.github.martingaston.application.http.Request;
+import com.github.martingaston.application.http.Response;
 import com.github.martingaston.application.transport.Connection;
 import com.github.martingaston.application.transport.Server;
 
@@ -24,21 +25,10 @@ class App {
 
         Client client = connection.awaitClient();
         Request request = new Request(client);
+        Response response = new Response(request);
+        String processedResponse = response.respond();
 
-        String response;
-        switch (request.method()) {
-            case POST:
-                response = "HTTP/1.1 200 OK\r\n\r\n" + request.body().toString();
-                break;
-            case HEAD:
-                response = "HTTP/1.1 200 OK\r\n\r\n";
-                break;
-            default:
-                response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-                break;
-        }
-
-        client.send(response);
+        client.send(processedResponse);
     }
 }
 
