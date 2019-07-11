@@ -21,7 +21,7 @@ class RequestTest {
 
         @BeforeEach
         void init() throws IOException {
-            request = new Request(client);
+            request = RequestParser.from(client);
         }
 
         @DisplayName("Will return a POST method")

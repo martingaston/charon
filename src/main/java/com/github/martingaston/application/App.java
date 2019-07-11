@@ -1,6 +1,7 @@
 package com.github.martingaston.application;
 
 import com.github.martingaston.application.http.Request;
+import com.github.martingaston.application.http.RequestParser;
 import com.github.martingaston.application.http.Response;
 import com.github.martingaston.application.transport.Connection;
 import com.github.martingaston.application.transport.Server;
@@ -30,7 +31,7 @@ class App {
     public void listen() throws IOException {
         while (running.isRunning()) {
             Client client = connection.awaitClient();
-            Request request = new Request(client);
+            Request request = RequestParser.from(client);
             Response response = new Response(request);
 
             client.send(response.respond());
