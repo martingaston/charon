@@ -2,10 +2,12 @@ package com.github.martingaston.application.http;
 
 public class Request {
     private RequestLine requestLine;
+    private Headers headers;
     private Body body;
 
-    public Request(RequestLine requestLine, Body body) {
+    public Request(RequestLine requestLine, Headers headers, Body body) {
         this.requestLine = requestLine;
+        this.headers = headers;
         this.body = body;
     }
 

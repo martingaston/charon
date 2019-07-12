@@ -11,10 +11,10 @@ public class RequestParser {
 
     public static Request from(Client client) throws IOException {
         RequestLine requestLine = parseRequestLine(client);
-        stripHeaders(client);
+        Headers headers = parseHeaders(client);
         Body body = parseBody(client);
 
-        return new Request(requestLine, body);
+        return new Request(requestLine, headers, body);
     }
 
     private static RequestLine parseRequestLine(Client client) throws IOException {
@@ -27,11 +27,18 @@ public class RequestParser {
         );
     }
 
-    private static void stripHeaders(Client client) throws IOException {
-        String headers = client.receive();
-        while (!headers.equals("")) {
-            headers = client.receive();
+    private static Headers parseHeaders(Client client) throws IOException {
+        Headers headers = new Headers();
+        String currentHeader;
+
+        currentHeader = client.receive();
+        while (!currentHeader.equals("")) {
+            String[] splitHeader = currentHeader.trim().split(": ");
+            headers.add(splitHeader[0], splitHeader[1]);
+            currentHeader = client.receive();
         }
+
+        return headers;
     }
 
     private static Body parseBody(Client client) throws IOException {
