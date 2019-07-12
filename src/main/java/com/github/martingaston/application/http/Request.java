@@ -1,42 +1,14 @@
 package com.github.martingaston.application.http;
 
-import com.github.martingaston.application.Client;
-
-import java.io.IOException;
-
 public class Request {
-    private Verbs method;
-    private URI uri;
-    private Version version;
+    private RequestLine requestLine;
+    private Headers headers;
     private Body body;
 
-    public Request(Client client) throws IOException {
-        parseRequest(client);
-    }
-
-    private void parseRequest(Client client) throws IOException {
-        parseRequestLine(client);
-        stripHeaders(client);
-        parseBody(client);
-    }
-
-    private void parseRequestLine(Client client) throws IOException {
-        String requestLine = client.receive();
-        String[] separatedRequestLine = requestLine.split(" ");
-        this.method = Verbs.from(separatedRequestLine[0]);
-        this.uri = URI.from(separatedRequestLine[1]);
-        this.version = Version.from(separatedRequestLine[2]);
-    }
-
-    private void stripHeaders(Client client) throws IOException {
-        String headers = client.receive();
-        while (!headers.equals("")) {
-            headers = client.receive();
-        }
-    }
-
-    private void parseBody(Client client) throws IOException {
-        this.body = Body.from(client.receiveBody());
+    public Request(RequestLine requestLine, Headers headers, Body body) {
+        this.requestLine = requestLine;
+        this.headers = headers;
+        this.body = body;
     }
 
     public int bodyContentLength() {
@@ -44,15 +16,23 @@ public class Request {
     }
 
     public Verbs method() {
-        return this.method;
+        return this.requestLine.method();
     }
 
     public URI uri() {
-        return this.uri;
+        return this.requestLine.uri();
     }
 
     public Version protocol() {
-        return this.version;
+        return this.requestLine.version();
+    }
+
+    public boolean hasHeader(String header) {
+        return this.headers.contains(header);
+    }
+
+    public String getHeader(String header) {
+        return this.headers.get(header);
     }
 
     public Body body() {
