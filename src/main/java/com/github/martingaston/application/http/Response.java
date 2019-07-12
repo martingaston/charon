@@ -21,6 +21,8 @@ public class Response {
         return this.status;
     }
 
+    public Headers headers() { return this.headers; }
+
     public Body body() {
         return this.body;
     }

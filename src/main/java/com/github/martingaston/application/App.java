@@ -1,8 +1,6 @@
 package com.github.martingaston.application;
 
-import com.github.martingaston.application.http.Request;
-import com.github.martingaston.application.http.RequestParser;
-import com.github.martingaston.application.http.Router;
+import com.github.martingaston.application.http.*;
 import com.github.martingaston.application.transport.Connection;
 import com.github.martingaston.application.transport.Server;
 
@@ -33,8 +31,9 @@ class App {
             Client client = connection.awaitClient();
             Request request = RequestParser.from(client);
             Router router = new Router(request);
+            Response response = router.respond();
 
-            client.send(router.respond());
+            client.send(ResponseSender.from(response));
         }
     }
 }
