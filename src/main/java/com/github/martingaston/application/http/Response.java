@@ -1,30 +1,29 @@
 package com.github.martingaston.application.http;
 
 public class Response {
-    private Request request;
+    private Version version;
+    private Status status;
+    private Headers headers;
+    private Body body;
 
-    public Response(Request request) {
-        this.request = request;
+    Response(Status status, Headers headers, Body body) {
+        this.version = Version.V1POINT1;
+        this.status = status;
+        this.headers = headers;
+        this.body = body;
     }
 
-    public String respond() {
-        String response;
+    public Version version() {
+        return this.version;
+    }
 
-        switch (request.method()) {
-            case GET:
-                response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 0\r\n\r\n";
-                break;
-            case POST:
-                response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: " + request.bodyContentLength() + "\r\n\r\n" + request.body().toString();
-                break;
-            case HEAD:
-                response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: " + request.bodyContentLength() + "\r\n\r\n";
-                break;
-            default:
-                response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
-                break;
-        }
+    public Status status() {
+        return this.status;
+    }
 
-        return response;
+    public Headers headers() { return this.headers; }
+
+    public Body body() {
+        return this.body;
     }
 }
