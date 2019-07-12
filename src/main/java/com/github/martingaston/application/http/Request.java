@@ -27,6 +27,14 @@ public class Request {
         return this.requestLine.version();
     }
 
+    public boolean hasHeader(String header) {
+        return this.headers.contains(header);
+    }
+
+    public String getHeader(String header) {
+        return this.headers.get(header);
+    }
+
     public Body body() {
         return this.body;
     }

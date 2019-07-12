@@ -12,9 +12,9 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("A Request class")
 class RequestTest {
     @Nested
-    @DisplayName("With a valid POST request containing a body and no headers")
+    @DisplayName("With a valid POST request containing a body and two headers")
     class postRequestNoHeaders {
-        private ByteArrayInputStream input = new ByteArrayInputStream("POST /echo_body HTTP/1.1\r\n\r\nsome body".getBytes());
+        private ByteArrayInputStream input = new ByteArrayInputStream("POST /echo_body HTTP/1.1\r\nHost: localhost:5000\r\nContent-Length: 9\r\n\r\nsome body".getBytes());
         private ByteArrayOutputStream output = new ByteArrayOutputStream();
         private Client client = new Client(input, output);
         private Request request;
@@ -40,6 +40,20 @@ class RequestTest {
         @Test
         void hasHttpMethod() {
             assertThat(request.protocol()).isEqualTo(Version.V1POINT1);
+        }
+
+        @DisplayName("Will contain headers")
+        @Test
+        void containsHeaders() {
+            assertThat(request.hasHeader("Content-Length")).isTrue();
+            assertThat(request.hasHeader("Host")).isTrue();
+        }
+
+        @DisplayName("Will return the headers")
+        @Test
+        void hasContentLengthHeader() {
+            assertThat(request.getHeader("Content-Length")).isEqualTo("9");
+            assertThat(request.getHeader("Host")).isEqualTo("localhost:5000");
         }
 
         @DisplayName("Will return a body")
