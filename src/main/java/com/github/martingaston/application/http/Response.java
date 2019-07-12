@@ -6,8 +6,8 @@ public class Response {
     private Headers headers;
     private Body body;
 
-    Response(Version version, Status status, Headers headers, Body body) {
-        this.version = version;
+    Response(Status status, Headers headers, Body body) {
+        this.version = Version.V1POINT1;
         this.status = status;
         this.headers = headers;
         this.body = body;

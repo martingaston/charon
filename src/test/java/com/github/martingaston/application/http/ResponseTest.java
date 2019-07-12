@@ -12,7 +12,7 @@ class ResponseTest {
         @DisplayName("Will return its information")
         @Test
         void returnsInformation() {
-            Response response = new Response(Version.V1POINT1, Status.OK, new Headers(), Body.from("Some body"));
+            Response response = new Response(Status.OK, new Headers(), Body.from("Some body"));
             assertThat(response.version()).isEqualTo(Version.V1POINT1);
             assertThat(response.status()).isEqualTo(Status.OK);
             assertThat(response.body()).isEqualTo(Body.from("Some body"));
