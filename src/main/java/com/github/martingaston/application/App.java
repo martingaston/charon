@@ -1,32 +1,40 @@
 package com.github.martingaston.application;
 
 import com.github.martingaston.application.http.Request;
+import com.github.martingaston.application.http.Response;
 import com.github.martingaston.application.transport.Connection;
 import com.github.martingaston.application.transport.Server;
 
 import java.io.IOException;
 
 class App {
-  private Server connection;
+    private Server connection;
+    private Runner running;
 
-  public App(Server connection) {
-    this.connection = connection;
-  }
+    public App(Server connection) {
+        this(connection, new LiveRunning());
+    }
 
-  public static void main(String[] args) throws IOException {
-      var connection = new Connection(5000);
-      var app = new App(connection);
+    public App(Server connection, Runner running) {
+        this.connection = connection;
+        this.running = running;
+    }
 
-      app.listen();
-  }
+    public static void main(String[] args) throws IOException {
+        var connection = new Connection(5000);
+        var app = new App(connection);
 
-  public void listen() throws IOException {
-    Client client = connection.awaitClient();
-    Request request = new Request(client);
+        app.listen();
+    }
 
-    String response = "HTTP/1.1 200 OK\r\n\r\n" + request.body();
+    public void listen() throws IOException {
+        while (running.isRunning()) {
+            Client client = connection.awaitClient();
+            Request request = new Request(client);
+            Response response = new Response(request);
 
-    client.send(response);
-  }
+            client.send(response.respond());
+        }
+    }
 }
 

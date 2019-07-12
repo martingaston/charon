@@ -39,6 +39,10 @@ public class Request {
         this.body = Body.from(client.receiveBody());
     }
 
+    public int bodyContentLength() {
+        return this.body.contentLength();
+    }
+
     public Verbs method() {
         return this.method;
     }
