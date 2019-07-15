@@ -1,0 +1,39 @@
+package com.github.martingaston.application.http;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
+
+@DisplayName("A Router class")
+class RouterTest {
+    private Router router;
+
+    @DisplayName("With a valid POST request")
+    @Nested
+    class canRouteValidPOST {
+        private Request request;
+        private Response response;
+
+        @BeforeEach
+        void init() {
+            request = new Request(new RequestLine(Verbs.POST, URI.from("/refactor_echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
+            router = new Router(request);
+            response = router.respond();
+        }
+
+        @DisplayName("Returns a 200 status code")
+        @Test
+        void returns200StatusCode() {
+            assertThat(response.status()).isEqualTo(Status.OK);
+        }
+
+        @DisplayName("Echoes the Request body")
+        @Test
+        void echoesRequestBody() {
+            assertThat(response.body()).isEqualTo(Body.from("It is a truth universally acknowledged..."));
+        }
+    }
+}

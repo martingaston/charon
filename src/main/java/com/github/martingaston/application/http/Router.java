@@ -1,5 +1,7 @@
 package com.github.martingaston.application.http;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class Router {
     private Request request;
 
@@ -12,7 +14,15 @@ public class Router {
         Headers headers = new Headers();
         Body body;
 
+        ConcurrentHashMap<URI, Handler> routes = new ConcurrentHashMap<>();
+        routes.put(URI.from("/refactor_echo_body"), new HandleEchoBody());
+
         headers.add("Connection", "close");
+
+        if(routes.containsKey(request.uri())) {
+            var handler = routes.get(request.uri());
+            return handler.handle(request);
+        }
 
         switch (request.method()) {
             case GET:
