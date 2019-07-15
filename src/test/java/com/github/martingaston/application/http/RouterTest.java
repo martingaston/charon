@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("A Router class")
 class RouterTest {
-    private Router router;
+    private Router router = new Router();
 
     @DisplayName("With a valid POST request")
     @Nested
@@ -20,8 +20,7 @@ class RouterTest {
         @BeforeEach
         void init() {
             request = new Request(new RequestLine(Verbs.POST, URI.from("/refactor_echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
-            router = new Router(request);
-            response = router.respond();
+            response = router.respond(request);
         }
 
         @DisplayName("Returns a 200 status code")

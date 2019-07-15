@@ -3,18 +3,17 @@ package com.github.martingaston.application.http;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Router {
-    private Request request;
+    private ConcurrentHashMap<URI, MethodHandler> routes;
 
-    public Router(Request request) {
-        this.request = request;
+    public Router() {
+        routes = new ConcurrentHashMap<>();
     }
 
-    public Response respond() {
+    public Response respond(Request request) {
         Response response;
         Headers headers = new Headers();
         Body body;
 
-        ConcurrentHashMap<URI, MethodHandler> routes = new ConcurrentHashMap<>();
         var methodHandler = new MethodHandler();
         methodHandler.add(Verbs.POST, new HandleEchoBody());
         routes.put(URI.from("/refactor_echo_body"), methodHandler);

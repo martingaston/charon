@@ -30,8 +30,8 @@ class App {
         while (running.isRunning()) {
             Client client = connection.awaitClient();
             Request request = RequestParser.from(client);
-            Router router = new Router(request);
-            Response response = router.respond();
+            Router router = new Router();
+            Response response = router.respond(request);
 
             client.send(ResponseSender.from(response));
         }
