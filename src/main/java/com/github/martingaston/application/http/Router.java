@@ -1,12 +1,10 @@
 package com.github.martingaston.application.http;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 public class Router {
-    private ConcurrentHashMap<URI, MethodHandler> routes;
+    private PathHandler routes;
 
     public Router() {
-        routes = new ConcurrentHashMap<>();
+        routes = new PathHandler();
     }
 
     public Response respond(Request request) {
@@ -16,11 +14,11 @@ public class Router {
 
         var methodHandler = new MethodHandler();
         methodHandler.add(Verbs.POST, new HandleEchoBody());
-        routes.put(URI.from("/refactor_echo_body"), methodHandler);
+        routes.add(URI.from("/refactor_echo_body"), methodHandler);
 
         headers.add("Connection", "close");
 
-        if(routes.containsKey(request.uri())) {
+        if(routes.isValidPath(request.uri())) {
             var methods = routes.get(request.uri());
 
             if(methods.isValidMethod(request.method())) {
