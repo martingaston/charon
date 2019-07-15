@@ -14,14 +14,21 @@ public class Router {
         Headers headers = new Headers();
         Body body;
 
-        ConcurrentHashMap<URI, Handler> routes = new ConcurrentHashMap<>();
-        routes.put(URI.from("/refactor_echo_body"), new HandleEchoBody());
+        ConcurrentHashMap<URI, MethodHandler> routes = new ConcurrentHashMap<>();
+        var methodHandler = new MethodHandler();
+        methodHandler.add(Verbs.POST, new HandleEchoBody());
+        routes.put(URI.from("/refactor_echo_body"), methodHandler);
 
         headers.add("Connection", "close");
 
         if(routes.containsKey(request.uri())) {
-            var handler = routes.get(request.uri());
-            return handler.handle(request);
+            var methods = routes.get(request.uri());
+
+            if(methods.isValidMethod(request.method())) {
+                var handler = methods.get(request.method());
+
+                return handler.handle(request);
+            }
         }
 
         switch (request.method()) {
