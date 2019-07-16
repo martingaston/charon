@@ -16,7 +16,7 @@ class MethodHandlerTest {
     @DisplayName("Returns true if a method exists")
     @Test
     void methodExists() {
-        methodHandler.add(Verbs.POST, new HandleEchoBody());
+        methodHandler.addMethod(Verbs.POST, new HandleEchoBody());
         assertThat(methodHandler.isValidMethod(Verbs.POST)).isTrue();
         assertThat(methodHandler.isValidMethod(Verbs.GET)).isFalse();
     }
@@ -24,9 +24,9 @@ class MethodHandlerTest {
     @DisplayName("Can output valid methods sorted alphabetically")
     @Test
     void knowsValidMethods() {
-        methodHandler.add(Verbs.POST, new HandleEchoBody());
-        methodHandler.add(Verbs.HEAD, new HandleEchoBody());
-        methodHandler.add(Verbs.GET, new HandleEchoBody());
+        methodHandler.addMethod(Verbs.POST, new HandleEchoBody());
+        methodHandler.addMethod(Verbs.HEAD, new HandleEchoBody());
+        methodHandler.addMethod(Verbs.GET, new HandleEchoBody());
 
         assertThat(methodHandler.valid()).isEqualTo("GET, HEAD, POST");
     }
@@ -35,8 +35,8 @@ class MethodHandlerTest {
     @Test
     void doesNotOverwrite() {
         var request = new Request(new RequestLine(Verbs.POST, URI.from("/refactor_echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
-        methodHandler.add(Verbs.POST, req -> new Response(Status.OK, new Headers(), Body.from("ABC")));
-        methodHandler.add(Verbs.POST, req -> new Response(Status.OK, new Headers(), Body.from("DEF")));
+        methodHandler.addMethod(Verbs.POST, req -> new Response(Status.OK, new Headers(), Body.from("ABC")));
+        methodHandler.addMethod(Verbs.POST, req -> new Response(Status.OK, new Headers(), Body.from("DEF")));
 
         Body body = methodHandler.get(Verbs.POST).handle(request).body();
         assertThat(body).isEqualTo(Body.from("ABC"));

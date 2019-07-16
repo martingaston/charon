@@ -9,8 +9,9 @@ class PathHandler {
         paths = new ConcurrentHashMap<>();
     }
 
-    public void add(URI uri, MethodHandler methods) {
+    public MethodHandler addPath(URI uri, MethodHandler methods) {
        paths.putIfAbsent(uri, methods);
+       return get(uri);
     }
 
     public boolean isValidPath(URI uri) {

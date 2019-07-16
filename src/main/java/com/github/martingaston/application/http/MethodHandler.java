@@ -10,7 +10,7 @@ public class MethodHandler {
         methods = new ConcurrentHashMap<>();
     }
 
-    void add(Verbs method, Handler handler) {
+    void addMethod(Verbs method, Handler handler) {
         methods.putIfAbsent(method, handler);
     }
 

@@ -13,8 +13,8 @@ public class Router {
         Body body;
 
         var methodHandler = new MethodHandler();
-        methodHandler.add(Verbs.POST, new HandleEchoBody());
-        routes.add(URI.from("/refactor_echo_body"), methodHandler);
+        methodHandler.addMethod(Verbs.POST, new HandleEchoBody());
+        routes.addPath(URI.from("/refactor_echo_body"), methodHandler);
 
         headers.add("Connection", "close");
 
