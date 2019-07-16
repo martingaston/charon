@@ -14,7 +14,7 @@ public class Routes {
             return paths.get(request.uri()).get(request.method());
         }
 
-        return req -> new Response.Builder(Status.NOT_FOUND).addHeader("Connection", "close").build();
+        return (req, res) -> res.status(Status.NOT_FOUND);
     }
 
     public void get(URI uri, Handler handler) {

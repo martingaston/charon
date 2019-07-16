@@ -44,6 +44,11 @@ public class Response {
             return this;
         }
 
+        public Builder status(Status status) {
+            this.status = status;
+            return this;
+        }
+
         public Builder body(Body body) {
             this.body = body;
             return this;

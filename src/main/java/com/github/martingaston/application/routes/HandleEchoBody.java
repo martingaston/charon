@@ -7,10 +7,7 @@ public class HandleEchoBody implements Handler {
     }
 
     @Override
-    public Response handle(Request request) {
-        return new Response.Builder(Status.OK)
-                .addHeader("Connection", "Close")
-                .body(Body.from(request.body().toString()))
-                .build();
+    public Response.Builder handle(Request request, Response.Builder response) {
+        return response.body(Body.from(request.body().toString()));
     }
 }

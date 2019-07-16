@@ -1,6 +1,7 @@
 package com.github.martingaston.application.routes;
 
-import com.github.martingaston.application.http.*;
+import com.github.martingaston.application.http.Status;
+import com.github.martingaston.application.http.Verbs;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -17,10 +18,8 @@ public class MethodHandler {
     }
 
     Handler get(Verbs method) {
-        return methods.getOrDefault(method, request -> new Response.Builder(Status.METHOD_NOT_ALLOWED)
-                    .addHeader("Connection", "close")
-                    .addHeader("Allow", "HEAD, OPTIONS")
-                    .build());
+        return methods.getOrDefault(method, (req, res) ->
+                res.status(Status.METHOD_NOT_ALLOWED).addHeader("Allow", "HEAD, OPTIONS"));
     }
 
 
