@@ -34,10 +34,6 @@ public class Router {
             return new Response(Status.OK, headers, Body.from(""));
         });
 
-        if(routes.isValid(request.method(), request.uri())) {
-            return routes.handler(request).handle(request);
-        }
-
-        return null;
+        return routes.handler(request).handle(request);
     }
 }

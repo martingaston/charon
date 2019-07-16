@@ -1,8 +1,6 @@
 package com.github.martingaston.application.routes;
 
-import com.github.martingaston.application.http.Request;
-import com.github.martingaston.application.http.URI;
-import com.github.martingaston.application.http.Verbs;
+import com.github.martingaston.application.http.*;
 
 public class Routes {
     private PathHandler paths;
@@ -12,7 +10,16 @@ public class Routes {
     }
 
     public Handler handler(Request request) {
-        return paths.get(request.uri()).get(request.method());
+        if(paths.isValidPath(request.uri())) {
+            return paths.get(request.uri()).get(request.method());
+        }
+
+        return req -> {
+         var headers = new Headers();
+            headers.add("Connection", "Close");
+            headers.add("Content-Length", 0);
+            return new Response(Status.NOT_FOUND, headers, Body.from(""));
+        };
     }
 
     public void get(URI uri, Handler handler) {
