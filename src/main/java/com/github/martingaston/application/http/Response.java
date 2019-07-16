@@ -6,11 +6,8 @@ public class Response {
     private Headers headers;
     private Body body;
 
-    public Response(Status status, Headers headers, Body body) {
-        this.version = Version.V1POINT1;
-        this.status = status;
-        this.headers = headers;
-        this.body = body;
+    private Response() {
+
     }
 
     public Version version() {
@@ -21,9 +18,51 @@ public class Response {
         return this.status;
     }
 
-    public Headers headers() { return this.headers; }
+    public Headers headers() {
+        return this.headers;
+    }
 
     public Body body() {
         return this.body;
+    }
+
+    public static class Builder {
+        private Version version;
+        private Status status;
+        private Headers headers;
+        private Body body;
+
+        public Builder(Status status) {
+            this.status = status;
+            this.headers = new Headers();
+            this.version = Version.V1POINT1;
+            this.body = Body.from("");
+        }
+
+        public <T> Builder addHeader(String header, T value) {
+            headers.add(header, value);
+            return this;
+        }
+
+        public Builder body(Body body) {
+            this.body = body;
+            return this;
+        }
+
+        private void addContentLength(int length) {
+            this.headers.add("Content-Length", length);
+        }
+
+        public Response build() {
+            Response response = new Response();
+
+            response.status = this.status;
+            response.version = this.version;
+            response.body = this.body;
+            addContentLength(this.body.contentLength());
+            response.headers = this.headers;
+
+            return response;
+        }
     }
 }

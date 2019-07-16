@@ -36,8 +36,8 @@ class MethodHandlerTest {
     @Test
     void doesNotOverwrite() {
         var request = new Request(new RequestLine(Verbs.POST, URI.from("/refactor_echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
-        methodHandler.addMethod(Verbs.POST, req -> new Response(Status.OK, new Headers(), Body.from("ABC")));
-        methodHandler.addMethod(Verbs.POST, req -> new Response(Status.OK, new Headers(), Body.from("DEF")));
+        methodHandler.addMethod(Verbs.POST, req -> new Response.Builder(Status.OK).body(Body.from("ABC")).build());
+        methodHandler.addMethod(Verbs.POST, req -> new Response.Builder(Status.OK).body(Body.from("DEF")).build());
 
         Body body = methodHandler.get(Verbs.POST).handle(request).body();
         assertThat(body).isEqualTo(Body.from("ABC"));

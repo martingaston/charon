@@ -8,10 +8,9 @@ public class HandleEchoBody implements Handler {
 
     @Override
     public Response handle(Request request) {
-        Headers headers = new Headers();
-        headers.add("Connection", "close");
-        headers.add("Content-Length", request.bodyContentLength());
-        Body body = Body.from(request.body().toString());
-        return new Response(Status.OK, headers, body);
+        return new Response.Builder(Status.OK)
+                .addHeader("Connection", "Close")
+                .body(Body.from(request.body().toString()))
+                .build();
     }
 }

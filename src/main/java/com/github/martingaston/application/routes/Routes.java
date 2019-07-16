@@ -14,12 +14,7 @@ public class Routes {
             return paths.get(request.uri()).get(request.method());
         }
 
-        return req -> {
-         var headers = new Headers();
-            headers.add("Connection", "Close");
-            headers.add("Content-Length", 0);
-            return new Response(Status.NOT_FOUND, headers, Body.from(""));
-        };
+        return req -> new Response.Builder(Status.NOT_FOUND).addHeader("Connection", "close").build();
     }
 
     public void get(URI uri, Handler handler) {

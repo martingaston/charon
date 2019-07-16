@@ -14,25 +14,16 @@ public class Router {
 
         headers.add("Connection", "close");
 
-        routes.post(URI.from("/echo_body"), req -> {
-            headers.add("Content-Length", req.bodyContentLength());
-            return new Response(Status.OK, headers, Body.from(req.body().toString()));
-        });
+        routes.post(URI.from("/echo_body"), req -> new Response.Builder(Status.OK)
+                .addHeader("Connection", "close")
+                .body(Body.from(req.body().toString()))
+                .build());
 
-        routes.head(URI.from("/simple_get"), req -> {
-            headers.add("Content-Length", 0);
-            return new Response(Status.OK, headers, Body.from(""));
-        });
+        routes.head(URI.from("/simple_get"), req -> new Response.Builder(Status.OK).addHeader("Connection", "close").build());
 
-        routes.head(URI.from("/get_with_body"), req -> {
-            headers.add("Content-Length", 0);
-            return new Response(Status.OK, headers, Body.from(""));
-        });
+        routes.head(URI.from("/get_with_body"), req -> new Response.Builder(Status.OK).addHeader("Connection", "close").build());
 
-        routes.get(URI.from("/simple_get"), req -> {
-            headers.add("Content-Length", 0);
-            return new Response(Status.OK, headers, Body.from(""));
-        });
+        routes.get(URI.from("/simple_get"), req -> new Response.Builder(Status.OK).addHeader("Connection", "close").build());
 
         return routes.handler(request).handle(request);
     }

@@ -17,13 +17,10 @@ public class MethodHandler {
     }
 
     Handler get(Verbs method) {
-        return methods.getOrDefault(method, request -> {
-            var headers = new Headers();
-            headers.add("Connection", "close");
-            headers.add("Content-Length", 0);
-            headers.add("Allow", "HEAD, OPTIONS");
-            return new Response(Status.METHOD_NOT_ALLOWED, headers, Body.from(""));
-        });
+        return methods.getOrDefault(method, request -> new Response.Builder(Status.METHOD_NOT_ALLOWED)
+                    .addHeader("Connection", "close")
+                    .addHeader("Allow", "HEAD, OPTIONS")
+                    .build());
     }
 
 
