@@ -64,7 +64,7 @@ class AppTest {
     @DisplayName("Will wait for a client to connect")
     @Test
     void waitsForClient() throws IOException {
-        byte[] request = "GET /echo_body HTTP/1.1\r\n\r\nsome body".getBytes();
+        byte[] request = "POST /echo_body HTTP/1.1\r\n\r\nsome body".getBytes();
 
         var connection = new MockConnection(request);
         var runOnce = new RunOnce();

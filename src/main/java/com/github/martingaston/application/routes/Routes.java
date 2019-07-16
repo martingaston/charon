@@ -23,6 +23,10 @@ public class Routes {
         addRoute(Verbs.POST, uri, handler);
     }
 
+    public void head(URI uri, Handler handler) {
+        addRoute(Verbs.HEAD, uri, handler);
+    }
+
     private void addRoute(Verbs method, URI uri, Handler handler) {
         paths.addPath(uri, new MethodHandler()).addMethod(method, handler);
     }

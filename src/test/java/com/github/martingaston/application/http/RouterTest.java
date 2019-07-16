@@ -19,7 +19,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.POST, URI.from("/refactor_echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
+            request = new Request(new RequestLine(Verbs.POST, URI.from("/echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
             response = router.respond(request);
         }
 
