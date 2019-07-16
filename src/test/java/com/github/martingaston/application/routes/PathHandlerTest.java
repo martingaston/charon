@@ -1,5 +1,8 @@
-package com.github.martingaston.application.http;
+package com.github.martingaston.application.routes;
 
+import com.github.martingaston.application.http.URI;
+import com.github.martingaston.application.routes.MethodHandler;
+import com.github.martingaston.application.routes.PathHandler;
 import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.*;

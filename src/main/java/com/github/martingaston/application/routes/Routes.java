@@ -1,10 +1,18 @@
-package com.github.martingaston.application.http;
+package com.github.martingaston.application.routes;
+
+import com.github.martingaston.application.http.Request;
+import com.github.martingaston.application.http.URI;
+import com.github.martingaston.application.http.Verbs;
 
 public class Routes {
     private PathHandler paths;
 
     public Routes() {
         paths = new PathHandler();
+    }
+
+    public Handler handler(Request request) {
+        return paths.get(request.uri()).get(request.method());
     }
 
     public void get(URI uri, Handler handler) {

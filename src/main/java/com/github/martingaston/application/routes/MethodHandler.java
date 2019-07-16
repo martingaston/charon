@@ -1,4 +1,6 @@
-package com.github.martingaston.application.http;
+package com.github.martingaston.application.routes;
+
+import com.github.martingaston.application.http.Verbs;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;

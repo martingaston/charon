@@ -1,4 +1,6 @@
-package com.github.martingaston.application.http;
+package com.github.martingaston.application.routes;
+
+import com.github.martingaston.application.http.URI;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,8 +12,8 @@ class PathHandler {
     }
 
     public MethodHandler addPath(URI uri, MethodHandler methods) {
-       paths.putIfAbsent(uri, methods);
-       return get(uri);
+        paths.putIfAbsent(uri, methods);
+        return get(uri);
     }
 
     public boolean isValidPath(URI uri) {

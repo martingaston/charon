@@ -1,7 +1,9 @@
-package com.github.martingaston.application.http;
+package com.github.martingaston.application.routes;
+
+import com.github.martingaston.application.http.*;
 
 public class HandleEchoBody implements Handler {
-    HandleEchoBody() {
+    public HandleEchoBody() {
     }
 
     @Override

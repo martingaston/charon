@@ -1,5 +1,6 @@
-package com.github.martingaston.application.http;
+package com.github.martingaston.application.routes;
 
+import com.github.martingaston.application.http.*;
 import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.*;

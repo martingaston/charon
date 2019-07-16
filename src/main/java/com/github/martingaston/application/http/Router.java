@@ -1,10 +1,14 @@
 package com.github.martingaston.application.http;
 
+import com.github.martingaston.application.routes.HandleEchoBody;
+import com.github.martingaston.application.routes.Routes;
+
+
 public class Router {
-    private PathHandler routes;
+    private Routes routes;
 
     public Router() {
-        routes = new PathHandler();
+        routes = new Routes();
     }
 
     public Response respond(Request request) {
@@ -12,20 +16,12 @@ public class Router {
         Headers headers = new Headers();
         Body body;
 
-        var methodHandler = new MethodHandler();
-        methodHandler.addMethod(Verbs.POST, new HandleEchoBody());
-        routes.addPath(URI.from("/refactor_echo_body"), methodHandler);
+        routes.post(URI.from("/refactor_echo_body"), new HandleEchoBody());
 
         headers.add("Connection", "close");
 
-        if(routes.isValidPath(request.uri())) {
-            var methods = routes.get(request.uri());
-
-            if(methods.isValidMethod(request.method())) {
-                var handler = methods.get(request.method());
-
-                return handler.handle(request);
-            }
+        if(routes.isValid(request.method(), request.uri())) {
+            return routes.handler(request).handle(request);
         }
 
         switch (request.method()) {
