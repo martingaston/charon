@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("A MethodHandler class")
 class MethodHandlerTest {
     private MethodHandler methodHandler;
+    private Handler handler = (req, res) -> res;
 
     @BeforeEach
     void init() {
@@ -17,7 +18,7 @@ class MethodHandlerTest {
     @DisplayName("Returns true if a method exists")
     @Test
     void methodExists() {
-        methodHandler.addMethod(Verbs.POST, new HandleEchoBody());
+        methodHandler.addMethod(Verbs.POST, handler);
         assertThat(methodHandler.isValidMethod(Verbs.POST)).isTrue();
         assertThat(methodHandler.isValidMethod(Verbs.GET)).isFalse();
     }
@@ -25,9 +26,9 @@ class MethodHandlerTest {
     @DisplayName("Can output valid methods sorted alphabetically")
     @Test
     void knowsValidMethods() {
-        methodHandler.addMethod(Verbs.POST, new HandleEchoBody());
-        methodHandler.addMethod(Verbs.HEAD, new HandleEchoBody());
-        methodHandler.addMethod(Verbs.GET, new HandleEchoBody());
+        methodHandler.addMethod(Verbs.POST, handler);
+        methodHandler.addMethod(Verbs.HEAD, handler);
+        methodHandler.addMethod(Verbs.GET, handler);
 
         assertThat(methodHandler.valid()).isEqualTo("GET, HEAD, POST");
     }
