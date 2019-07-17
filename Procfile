@@ -1,1 +1,1 @@
-web: java -jar build/libs/charon.jar -p $PORT
+web: java -Dapp.port=$PORT -jar build/libs/charon.jar
