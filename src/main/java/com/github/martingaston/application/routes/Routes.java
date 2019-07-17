@@ -9,10 +9,20 @@ public class Routes {
         paths = new PathHandler();
     }
 
+    private Handler emptyResponse = (req, res) -> res;
+
+    public void get(URI uri) {
+        get(uri, emptyResponse);
+    }
+
     public void get(URI uri, Handler handler) {
         addRoute(Verbs.GET, uri, handler);
         addRoute(Verbs.HEAD, uri, handler);
         addRoute(Verbs.OPTIONS, uri, handler);
+    }
+
+    public void post (URI uri) {
+        post(uri, emptyResponse);
     }
 
     public void post(URI uri, Handler handler) {
@@ -20,9 +30,17 @@ public class Routes {
         addRoute(Verbs.OPTIONS, uri, handler);
     }
 
+    public void put(URI uri) {
+        put(uri, emptyResponse);
+    }
+
     public void put(URI uri, Handler handler) {
         addRoute(Verbs.PUT, uri, handler);
         addRoute(Verbs.OPTIONS, uri, handler);
+    }
+
+    public void head(URI uri) {
+        head(uri, emptyResponse);
     }
 
     public void head(URI uri, Handler handler) {

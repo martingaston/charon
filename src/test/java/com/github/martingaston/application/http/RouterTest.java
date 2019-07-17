@@ -1,15 +1,33 @@
 package com.github.martingaston.application.http;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import com.github.martingaston.application.routes.Routes;
+import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("A Router class")
 class RouterTest {
-    private Router router = new Router();
+    static private Router router;
+
+    @BeforeAll
+    static void initAll() {
+        Routes routes = new Routes();
+        routes.post(URI.from("/echo_body"), (req, res) -> res.body(Body.from(req.body().toString())));
+
+        routes.head(URI.from("/get_with_body"));
+
+        routes.get(URI.from("/simple_get"));
+
+        routes.get(URI.from("/method_options"));
+
+        routes.get(URI.from("/method_options2"));
+
+        routes.post(URI.from("/method_options2"));
+
+        routes.put(URI.from("/method_options2"));
+
+        router = new Router(routes);
+    }
 
     @DisplayName("With a valid POST request")
     @Nested
