@@ -1,6 +1,7 @@
 package com.github.martingaston.application.http;
 
 import com.github.martingaston.application.routes.Routes;
+import com.github.martingaston.application.routes.Validator;
 
 public class Router {
     private Routes routes;
@@ -26,15 +27,11 @@ public class Router {
 
         routes.put(URI.from("/method_options2"), (req, res) -> res);
 
-        return handle(request, response);
+        return Validator.from(request, response, routes);
     }
 
     private Response.Builder createDefaultResponse() {
         return new Response.Builder(Status.OK)
                     .addHeader("Connection", "close");
-    }
-
-    private Response handle(Request request, Response.Builder response) {
-       return routes.handle(request, response);
     }
 }
