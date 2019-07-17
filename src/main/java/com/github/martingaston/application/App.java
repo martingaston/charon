@@ -2,6 +2,7 @@ package com.github.martingaston.application;
 
 import com.github.martingaston.application.http.*;
 import com.github.martingaston.application.transport.Connection;
+import com.github.martingaston.application.transport.Port;
 import com.github.martingaston.application.transport.Server;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ class App {
     }
 
     public static void main(String[] args) throws IOException {
-        var connection = new Connection(5000);
+        var connection = new Connection(new Port(5000));
         var app = new App(connection);
 
         app.listen();

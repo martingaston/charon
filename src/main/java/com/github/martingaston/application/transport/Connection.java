@@ -9,8 +9,8 @@ import java.net.Socket;
 public class Connection implements Server {
     private ServerSocket server;
 
-    public Connection(int port) throws IOException {
-        this.server = new ServerSocket(port);
+    public Connection(Port port) throws IOException {
+        this.server = new ServerSocket(port.get());
     }
 
     @Override
