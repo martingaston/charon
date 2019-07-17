@@ -8,18 +8,18 @@ public class Validator {
     }
 
     public static Response from(Request request, Response.Builder response, Routes routes) {
-        if (!routes.isValidPath(request.uri())) {
+        if (invalidPath(request, routes)) {
             response.status(Status.NOT_FOUND);
             return response.build();
         }
 
-        if (request.method() == Verbs.OPTIONS) {
+        if (optionsRequest(request)) {
             response.addHeader("Allow", routes.validAtPath(request));
             response.body(Body.from(""));
             return response.build();
         }
 
-        if (!routes.isValidMethod(request.method(), request.uri())) {
+        if (invalidMethod(request, routes)) {
             response.status(Status.METHOD_NOT_ALLOWED);
             response.addHeader("Allow", routes.validAtPath(request));
             return response.build();
@@ -30,10 +30,26 @@ public class Validator {
         response.status(Status.OK);
         response.addHeader("Content-Length", response.bodyLength());
 
-        if (request.method() == Verbs.HEAD) {
+        if (headRequest(request)) {
             response.body(Body.from(""));
         }
 
         return response.build();
+    }
+
+    private static boolean headRequest(Request request) {
+        return request.method() == Verbs.HEAD;
+    }
+
+    private static boolean invalidMethod(Request request, Routes routes) {
+        return !routes.isValidMethod(request.method(), request.uri());
+    }
+
+    private static boolean optionsRequest(Request request) {
+        return request.method() == Verbs.OPTIONS;
+    }
+
+    private static boolean invalidPath(Request request, Routes routes) {
+        return !routes.isValidPath(request.uri());
     }
 }
