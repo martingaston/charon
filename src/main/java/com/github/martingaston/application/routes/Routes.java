@@ -19,6 +19,10 @@ public class Routes {
 
     public void get(URI uri, Handler handler) {
         addRoute(Verbs.GET, uri, handler);
+        addRoute(Verbs.HEAD, uri, (req, res) -> {
+            res.addHeader("Content-Length", 36);
+            return res;
+        });
     }
 
     public void post(URI uri, Handler handler) {

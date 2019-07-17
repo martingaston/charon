@@ -55,6 +55,37 @@ class RouterTest {
         }
     }
 
+    @DisplayName("With a HEAD request on a path that exists as a GET")
+    @Nested
+    class respondsToHeadForGetPaths {
+        private Request request;
+        private Response response;
+
+        @BeforeEach
+        void init() {
+            request = new Request(new RequestLine(Verbs.HEAD, URI.from("/get_example"), Version.V1POINT1), new Headers(), Body.from(""));
+            response = router.respond(request);
+        }
+
+        @DisplayName("Returns a 200 status code")
+        @Test
+        void returnsA200StatusCode() {
+            assertThat(response.status()).isEqualTo(Status.OK);
+        }
+
+        @DisplayName("Response has no body")
+        @Test
+        void returnsAnEmptyBody() {
+            assertThat(response.body()).isEqualTo(Body.from(""));
+        }
+
+        @DisplayName("Response has a Content-Length header")
+        @Test
+        void returnsContentLengthHeader() {
+            assertThat(response.headers().get("Content-Length")).isEqualTo("36");
+        }
+    }
+
     @DisplayName("With an invalid path request")
     @Nested
     class canRouteInvalidPath {

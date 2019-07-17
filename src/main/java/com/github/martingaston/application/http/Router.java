@@ -22,6 +22,8 @@ public class Router {
 
         routes.get(URI.from("/simple_get"), (req, res) -> res);
 
+        routes.get(URI.from("/get_example"), (req, res) -> res.body(Body.from("This shouldn't be in a HEAD response")));
+
         return routes.handler(request).handle(request, response).build();
     }
 }
