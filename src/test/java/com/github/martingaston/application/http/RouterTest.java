@@ -63,7 +63,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.HEAD, URI.from("/get_example"), Version.V1POINT1), new Headers(), Body.from(""));
+            request = new Request(new RequestLine(Verbs.HEAD, URI.from("/simple_get"), Version.V1POINT1), new Headers(), Body.from(""));
             response = router.respond(request);
         }
 
@@ -82,7 +82,69 @@ class RouterTest {
         @DisplayName("Response has a Content-Length header")
         @Test
         void returnsContentLengthHeader() {
-            assertThat(response.headers().get("Content-Length")).isEqualTo("36");
+            assertThat(response.headers().get("Content-Length")).isEqualTo("0");
+        }
+    }
+
+    @DisplayName("With an OPTIONS request on a single GET path")
+    @Nested
+    class respondsToOptionsOnOneVerbPath {
+        private Request request;
+        private Response response;
+
+        @BeforeEach
+        void init() {
+            request = new Request(new RequestLine(Verbs.OPTIONS, URI.from("/method_options"), Version.V1POINT1), new Headers(), Body.from(""));
+            response = router.respond(request);
+        }
+
+        @DisplayName("Returns a 200 status code")
+        @Test
+        void returnsA200StatusCode() {
+            assertThat(response.status()).isEqualTo(Status.OK);
+        }
+
+        @DisplayName("Response has no body")
+        @Test
+        void returnsAnEmptyBody() {
+            assertThat(response.body()).isEqualTo(Body.from(""));
+        }
+
+        @DisplayName("Response has an Allow header of GET, HEAD, OPTIONS")
+        @Test
+        void returnsContentLengthHeader() {
+            assertThat(response.headers().get("Allow")).isEqualTo("GET, HEAD, OPTIONS");
+        }
+    }
+
+    @DisplayName("With an OPTIONS request on GET, POST and PUT path")
+    @Nested
+    class respondsToOptionsOnThreeVerbPath {
+        private Request request;
+        private Response response;
+
+        @BeforeEach
+        void init() {
+            request = new Request(new RequestLine(Verbs.OPTIONS, URI.from("/method_options2"), Version.V1POINT1), new Headers(), Body.from(""));
+            response = router.respond(request);
+        }
+
+        @DisplayName("Returns a 200 status code")
+        @Test
+        void returnsA200StatusCode() {
+            assertThat(response.status()).isEqualTo(Status.OK);
+        }
+
+        @DisplayName("Response has no body")
+        @Test
+        void returnsAnEmptyBody() {
+            assertThat(response.body()).isEqualTo(Body.from(""));
+        }
+
+        @DisplayName("Response has an Allow header of GET, HEAD, OPTIONS")
+        @Test
+        void returnsContentLengthHeader() {
+            assertThat(response.headers().get("Allow")).isEqualTo("GET, HEAD, OPTIONS, POST, PUT");
         }
     }
 

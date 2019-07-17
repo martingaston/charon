@@ -54,6 +54,10 @@ public class Response {
             return this;
         }
 
+        public int bodyLength() {
+            return body.contentLength();
+        }
+
         private void addContentLength(int length) {
             this.headers.add("Content-Length", length);
         }
