@@ -21,4 +21,9 @@ public class URI {
         URI uri = (URI) obj;
         return getClass() == obj.getClass() && this.URI.equals(uri.URI);
     }
+
+    @Override
+    public int hashCode() {
+        return this.URI.hashCode();
+    }
 }

@@ -13,7 +13,7 @@ class HeadersTest {
         headers = new Headers();
     }
 
-    @DisplayName("Can add and retrieve headers")
+    @DisplayName("Can addPath and retrieve headers")
     @Test
     void addAndRetrieve() {
         assertThat(headers.contains("Connection")).isFalse();
