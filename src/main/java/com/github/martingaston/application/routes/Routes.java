@@ -27,6 +27,7 @@ public class Routes {
 
     public void head(URI uri, Handler handler) {
         addRoute(Verbs.HEAD, uri, handler);
+        addRoute(Verbs.OPTIONS, uri, handler);
     }
 
     private void addRoute(Verbs method, URI uri, Handler handler) {
