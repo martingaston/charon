@@ -22,7 +22,6 @@ public class MethodHandler {
                 res.status(Status.METHOD_NOT_ALLOWED).addHeader("Allow", "HEAD, OPTIONS"));
     }
 
-
     boolean isValidMethod(Verbs method) {
         return methods.containsKey(method);
     }
