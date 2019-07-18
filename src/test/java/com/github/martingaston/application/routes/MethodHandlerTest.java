@@ -40,7 +40,7 @@ class MethodHandlerTest {
         methodHandler.addMethod(Verbs.POST, (req, res) -> res.body(Body.from("ABC")));
         methodHandler.addMethod(Verbs.POST, (req, res) -> res.body(Body.from("DEF")));
 
-        Response.Builder response = new Response.Builder(Status.OK);
+        Response.Options response = new Response.Options(Status.OK);
         Body body = methodHandler.get(Verbs.POST).handle(request, response).build().body();
         assertThat(body).isEqualTo(Body.from("ABC"));
     }

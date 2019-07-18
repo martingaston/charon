@@ -26,41 +26,41 @@ public class Response {
         return this.body;
     }
 
-    public static class Builder {
+    public static class Options {
         private Version version;
         private Status status;
         private Headers headers;
         private Body body;
 
-        public Builder(Status status) {
+        public Options(Status status) {
             this.status = status;
             this.headers = new Headers();
             this.version = Version.V1POINT1;
             this.body = Body.from("");
         }
 
-        public <T> Builder addHeader(String header, T value) {
+        public <T> Options addHeader(String header, T value) {
             headers.add(header, value);
             return this;
         }
 
-        public Builder status(Status status) {
+        public Options status(Status status) {
             this.status = status;
             return this;
         }
 
-        public Builder body(Body body) {
+        public Options body(Body body) {
             this.body = body;
             return this;
         }
 
-        public Builder redirect(Status status, URI location) {
+        public Options redirect(Status status, URI location) {
             this.status = status;
             this.addHeader("Location", location);
             return this;
         }
 
-        public Builder send(Body body) {
+        public Options send(Body body) {
             this.status(Status.OK);
             this.body = body;
             this.addHeader("Content-Length", this.bodyLength());
