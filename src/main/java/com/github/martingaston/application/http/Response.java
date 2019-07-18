@@ -63,12 +63,7 @@ public class Response {
         public Options send(Body body) {
             this.status(Status.OK);
             this.body = body;
-            this.addHeader("Content-Length", this.bodyLength());
             return this;
-        }
-
-        private int bodyLength() {
-            return body.contentLength();
         }
 
         private void addContentLength(int length) {
