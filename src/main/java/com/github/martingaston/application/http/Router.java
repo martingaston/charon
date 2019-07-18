@@ -40,8 +40,7 @@ public class Router {
 
     private static void handleValidRequest(Request request, Response.Builder response, Routes routes) {
         routes.handler(request).handle(request, response);
-        response.status(Status.OK);
-        response.addHeader("Content-Length", response.bodyLength());
+
     }
 
     private static Response sendMethodNotFoundResponse(Request request, Response.Builder response, Routes routes) {

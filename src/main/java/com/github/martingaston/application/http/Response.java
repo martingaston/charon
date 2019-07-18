@@ -54,7 +54,20 @@ public class Response {
             return this;
         }
 
-        public int bodyLength() {
+        public Builder redirect(Status status, URI location) {
+            this.status = status;
+            this.addHeader("Location", location);
+            return this;
+        }
+
+        public Builder send(Body body) {
+            this.status(Status.OK);
+            this.body = body;
+            this.addHeader("Content-Length", this.bodyLength());
+            return this;
+        }
+
+        private int bodyLength() {
             return body.contentLength();
         }
 
