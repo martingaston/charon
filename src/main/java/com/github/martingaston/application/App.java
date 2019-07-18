@@ -2,6 +2,7 @@ package com.github.martingaston.application;
 
 import com.github.martingaston.application.http.*;
 import com.github.martingaston.application.transport.Connection;
+import com.github.martingaston.application.transport.Port;
 import com.github.martingaston.application.transport.Server;
 
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.io.IOException;
 class App {
     private Server connection;
     private Runner running;
+    private static final String PORT_PROPERTY = "app.port";
+    private static final int DEFAULT_PORT = 5000;
 
     public App(Server connection) {
         this(connection, new LiveRunning());
@@ -20,7 +23,8 @@ class App {
     }
 
     public static void main(String[] args) throws IOException {
-        var connection = new Connection(5000);
+        var port = new Port(getPortNumber());
+        var connection = new Connection(port);
         var app = new App(connection);
 
         app.listen();
@@ -35,6 +39,16 @@ class App {
 
             client.send(ResponseSender.from(response));
         }
+    }
+
+    private static int getPortNumber() {
+        var portProperty = System.getProperty(PORT_PROPERTY);
+
+        if(portProperty == null) {
+            return DEFAULT_PORT;
+        }
+
+        return Integer.parseInt(portProperty);
     }
 }
 
