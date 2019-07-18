@@ -1,7 +1,7 @@
 package com.github.martingaston.application.http;
 
 public class URI {
-    private String URI;
+    private final String URI;
 
     private URI(String URI) {
         this.URI = URI;

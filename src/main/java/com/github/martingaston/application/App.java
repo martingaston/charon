@@ -47,7 +47,7 @@ class App {
             Request request = RequestParser.from(client);
             Routes routes = new Routes();
 
-            routes.post(URI.from("/echo_body"), (req, res) -> res.send(Body.from(req.body().toString())));
+            routes.post(URI.from("/echo_body"), (req, res) -> res.send(req.body()));
 
             routes.head(URI.from("/get_with_body"));
 
