@@ -13,7 +13,7 @@ class RouterTest {
     @BeforeAll
     static void initAll() {
         Routes routes = new Routes();
-        routes.post(URI.from("/echo_body"), (req, res) -> res.body(Body.from(req.body().toString())));
+        routes.post(URI.from("/echo_body"), (req, res) -> res.send(Body.from(req.body().toString())));
 
         routes.head(URI.from("/get_with_body"));
 
@@ -26,6 +26,11 @@ class RouterTest {
         routes.post(URI.from("/method_options2"));
 
         routes.put(URI.from("/method_options2"));
+
+        routes.get(URI.from("/redirect"), (req, res) -> {
+            URI location = URI.from("http://127.0.0.1:5000/simple_get");
+            return res.redirect(Status.MOVED_PERMANENTLY, location);
+        });
 
         router = new Router(routes);
 
@@ -207,6 +212,25 @@ class RouterTest {
             Response response = router.respond(request);
 
             assertThat(response.status()).isEqualTo(Status.BAD_REQUEST);
+        }
+    }
+
+    @DisplayName("With a GET request on a redirected route")
+    @Nested
+    class canRedirectRequest {
+        private Request request;
+        private Response response;
+
+        @BeforeEach
+        void init() {
+            request = new Request(new RequestLine(Verbs.GET, URI.from("/redirect"), Version.V1POINT1), headers, Body.from(""));
+            response = router.respond(request);
+        }
+
+        @DisplayName("Returns a 301 status code")
+        @Test
+        void returns301StatusCode() {
+            assertThat(response.status()).isEqualTo(Status.MOVED_PERMANENTLY);
         }
     }
 }

@@ -10,7 +10,7 @@ public class Router {
     }
 
     public Response respond(Request request) {
-        Response.Builder response = createDefaultResponse();
+        Response.Options response = createDefaultResponse();
 
         if (invalidRequest(request)) {
             return sendBadRequestResponse(response);
@@ -28,7 +28,16 @@ public class Router {
             return sendMethodNotFoundResponse(request, response, routes);
         }
 
-        handleValidRequest(request, response, routes);
+        return handleValidRequest(request, response, routes);
+    }
+
+    private Response.Options createDefaultResponse() {
+        return new Response.Options(Status.OK)
+                    .addHeader("Connection", "close");
+    }
+
+    private static Response handleValidRequest(Request request, Response.Options response, Routes routes) {
+        routes.handler(request).handle(request, response);
 
         if (headRequest(request)) {
             response.body(Body.from(""));
@@ -41,33 +50,23 @@ public class Router {
         return request.method() == Verbs.INVALID || !request.hasHeader("Host") || request.protocol() == Version.INVALID;
     }
 
-    private Response.Builder createDefaultResponse() {
-        return new Response.Builder(Status.OK)
-                    .addHeader("Connection", "close");
-    }
-
-    private Response sendBadRequestResponse(Response.Builder response) {
+    private Response sendBadRequestResponse(Response.Options response) {
         response.status(Status.BAD_REQUEST);
         return response.build();
     }
-    private static void handleValidRequest(Request request, Response.Builder response, Routes routes) {
-        routes.handler(request).handle(request, response);
-        response.status(Status.OK);
-        response.addHeader("Content-Length", response.bodyLength());
-    }
 
-    private static Response sendMethodNotFoundResponse(Request request, Response.Builder response, Routes routes) {
+    private static Response sendMethodNotFoundResponse(Request request, Response.Options response, Routes routes) {
         response.status(Status.METHOD_NOT_ALLOWED);
         response.addHeader("Allow", routes.validAtPath(request));
         return response.build();
     }
 
-    private static Response sendNotFoundResponse(Response.Builder response) {
+    private static Response sendNotFoundResponse(Response.Options response) {
         response.status(Status.NOT_FOUND);
         return response.build();
     }
 
-    private static Response sendOptionsResponse(Request request, Response.Builder response, Routes routes) {
+    private static Response sendOptionsResponse(Request request, Response.Options response, Routes routes) {
         response.addHeader("Allow", routes.validAtPath(request));
         response.body(Body.from(""));
         return response.build();
