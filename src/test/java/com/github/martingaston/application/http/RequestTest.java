@@ -62,4 +62,23 @@ class RequestTest {
             assertThat(request.body()).isEqualTo(Body.from("some body"));
         }
     }
+
+    @Nested
+    @DisplayName("Will gracefully handle a null request")
+    class handlesInvalidRequests {
+        private ByteArrayOutputStream output = new ByteArrayOutputStream();
+        private Client client = new Client(null, output);
+        private Request request;
+
+        @BeforeEach
+        void init() throws IOException {
+            request = RequestParser.from(client);
+        }
+
+        @DisplayName("Will return an invalid method")
+        @Test
+        void hasInvalidMethod() {
+            assertThat(request.method()).isEqualTo(Verbs.INVALID);
+        }
+    }
 }
