@@ -32,7 +32,7 @@ class App {
     }
 
     private static int getPortNumber() {
-        var portProperty = System.getProperty(PORT_PROPERTY);
+        String portProperty = System.getProperty(PORT_PROPERTY);
 
         if (portProperty == null) {
             return DEFAULT_PORT;
