@@ -3,7 +3,7 @@ package com.github.martingaston.application.transport;
 public class Port {
     private final int port;
     private final int MIN_PORT = 1024;
-    private final int MAX_PORT = 49151;
+    private final int MAX_PORT = 65535;
 
     public Port(int port) {
         validatePort(port);

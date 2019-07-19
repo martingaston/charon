@@ -14,7 +14,13 @@ public class Receiver {
     }
 
     public String receiveLine() throws IOException {
-        return buffered.readLine();
+        String received = buffered.readLine();
+
+        if (received == null) {
+            return "";
+        }
+
+        return received;
     }
 
     public byte[] drainStream() throws IOException {

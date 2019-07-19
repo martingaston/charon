@@ -12,6 +12,12 @@ class PortTest {
     }
 
     @Test
+    void createsOnEphemeralPort() {
+        var port = new Port(65535);
+        assertThat(port.get()).isEqualTo(65535);
+    }
+
+    @Test
     void willNotCreateOnSystemPort() {
         var thrown = catchThrowable(() -> new Port(80));
         assertThat(thrown).hasMessageContaining("Invalid port");
