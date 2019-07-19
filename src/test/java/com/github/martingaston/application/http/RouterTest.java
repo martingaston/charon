@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("A Router class")
 class RouterTest {
     static private Router router;
+    static private Headers headers;
 
     @BeforeAll
     static void initAll() {
@@ -27,6 +28,9 @@ class RouterTest {
         routes.put(URI.from("/method_options2"));
 
         router = new Router(routes);
+
+        headers = new Headers();
+        headers.add("Host", "localhost:5000");
     }
 
     @DisplayName("With a valid POST request")
@@ -37,7 +41,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.POST, URI.from("/echo_body"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
+            request = new Request(new RequestLine(Verbs.POST, URI.from("/echo_body"), Version.V1POINT1), headers, Body.from("It is a truth universally acknowledged..."));
             response = router.respond(request);
         }
 
@@ -62,7 +66,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.GET, URI.from("/get_with_body"), Version.V1POINT1), new Headers(), Body.from(""));
+            request = new Request(new RequestLine(Verbs.GET, URI.from("/get_with_body"), Version.V1POINT1), headers, Body.from(""));
             response = router.respond(request);
         }
 
@@ -81,7 +85,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.HEAD, URI.from("/simple_get"), Version.V1POINT1), new Headers(), Body.from(""));
+            request = new Request(new RequestLine(Verbs.HEAD, URI.from("/simple_get"), Version.V1POINT1), headers, Body.from(""));
             response = router.respond(request);
         }
 
@@ -112,7 +116,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.OPTIONS, URI.from("/method_options"), Version.V1POINT1), new Headers(), Body.from(""));
+            request = new Request(new RequestLine(Verbs.OPTIONS, URI.from("/method_options"), Version.V1POINT1), headers, Body.from(""));
             response = router.respond(request);
         }
 
@@ -143,7 +147,7 @@ class RouterTest {
 
         @BeforeEach
         void init() {
-            request = new Request(new RequestLine(Verbs.OPTIONS, URI.from("/method_options2"), Version.V1POINT1), new Headers(), Body.from(""));
+            request = new Request(new RequestLine(Verbs.OPTIONS, URI.from("/method_options2"), Version.V1POINT1), headers, Body.from(""));
             response = router.respond(request);
         }
 
@@ -172,9 +176,22 @@ class RouterTest {
         @DisplayName("Returns a 404 status code")
         @Test
         void returns404StatusCode() {
-            Request request = new Request(new RequestLine(Verbs.POST, URI.from("/totally_invalid_path"), Version.V1POINT1), new Headers(), Body.from("It is a truth universally acknowledged..."));
+            Request request = new Request(new RequestLine(Verbs.POST, URI.from("/totally_invalid_path"), Version.V1POINT1), headers, Body.from("It is a truth universally acknowledged..."));
             Response response = router.respond(request);
             assertThat(response.status()).isEqualTo(Status.NOT_FOUND);
+        }
+    }
+
+    @DisplayName("Can handle invalid requests")
+    @Nested
+    class canRouteBadRequests {
+
+        @DisplayName("With an invalid method")
+        @Test void withInvalidMethod() {
+           Request request = new Request(new RequestLine(Verbs.INVALID, URI.from("/echo_body"), Version.V1POINT1), headers, Body.from(""));
+           Response response = router.respond(request);
+
+           assertThat(response.status()).isEqualTo(Status.BAD_REQUEST);
         }
     }
 }
