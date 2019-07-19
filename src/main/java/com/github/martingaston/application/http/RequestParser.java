@@ -20,6 +20,10 @@ public class RequestParser {
     private static RequestLine parseRequestLine(Client client) throws IOException {
         String[] separatedRequestLine = client.receive().split(" ");
 
+        if (separatedRequestLine.length != 3) {
+            return new RequestLine(Verbs.INVALID, URI.from(""), Version.INVALID);
+        }
+
         return new RequestLine(
                 Verbs.from(separatedRequestLine[0]),
                 URI.from(separatedRequestLine[1]),

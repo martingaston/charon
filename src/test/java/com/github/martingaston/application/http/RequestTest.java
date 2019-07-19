@@ -66,8 +66,9 @@ class RequestTest {
     @Nested
     @DisplayName("Will gracefully handle a null request")
     class handlesInvalidRequests {
+        private ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
         private ByteArrayOutputStream output = new ByteArrayOutputStream();
-        private Client client = new Client(null, output);
+        private Client client = new Client(input, output);
         private Request request;
 
         @BeforeEach
@@ -79,6 +80,12 @@ class RequestTest {
         @Test
         void hasInvalidMethod() {
             assertThat(request.method()).isEqualTo(Verbs.INVALID);
+        }
+
+        @DisplayName("Will return an invalid version")
+        @Test
+        void hasInvalidVersion() {
+            assertThat(request.protocol()).isEqualTo(Version.INVALID);
         }
     }
 }

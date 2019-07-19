@@ -20,4 +20,12 @@ class ReceiverTest {
 
     }
 
+    @DisplayName("Will return no/null input as an empty string")
+    @Test
+    void returnsEmptyStringOnNoInput() throws IOException {
+        ByteArrayInputStream input = new ByteArrayInputStream("".getBytes());
+        Receiver receiver = new Receiver(input);
+
+        assertThat(receiver.receiveLine()).isEqualTo("");
+    }
 }
