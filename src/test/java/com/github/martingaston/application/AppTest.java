@@ -12,7 +12,7 @@ class AppTest {
     @DisplayName("POST /echo_body with body 'some body' returns 200 with body 'some body'")
     @Test
     void simplePostRequest() throws IOException {
-        byte[] request = "POST /echo_body HTTP/1.1\r\n\r\nsome body".getBytes();
+        byte[] request = "POST /echo_body HTTP/1.1\r\nHost: localhost:5000\r\n\r\nsome body".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 9\r\n\r\nsome body".getBytes();
 
         var connection = new MockConnection(request);
@@ -25,7 +25,7 @@ class AppTest {
     @DisplayName("POST /echo_body with body 'i wanna dance with some body' returns 200 with body 'i wanna dance with some body'")
     @Test
     void simplePostRequestDanceWithSomeBody() throws IOException {
-        byte[] request = "POST /echo_body HTTP/1.1\r\n\r\ni wanna dance with some body".getBytes();
+        byte[] request = "POST /echo_body HTTP/1.1\r\nHost: localhost:5000\r\n\r\ni wanna dance with some body".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 28\r\n\r\ni wanna dance with some body".getBytes();
 
         var connection = new MockConnection(request);
@@ -38,7 +38,7 @@ class AppTest {
     @DisplayName("HEAD /get_with_body returns a 200 with no body")
     @Test
     void headRequestReturnsNoBody() throws IOException {
-        byte[] request = "HEAD /get_with_body HTTP/1.1\r\n\r\n".getBytes();
+        byte[] request = "HEAD /get_with_body HTTP/1.1\r\nHost: localhost:5000\r\n\r\n".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 0\r\n\r\n".getBytes();
 
         var connection = new MockConnection(request);
@@ -51,7 +51,7 @@ class AppTest {
     @DisplayName("GET /simple_get returns a 200 with no body")
     @Test
     void simpleGetReturns200WithNoBody() throws IOException {
-        byte[] request = "GET /simple_get HTTP/1.1\r\n\r\n".getBytes();
+        byte[] request = "GET /simple_get HTTP/1.1\r\nHost: localhost:5000\r\n\r\n".getBytes();
         byte[] response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Length: 0\r\n\r\n".getBytes();
 
         var connection = new MockConnection(request);

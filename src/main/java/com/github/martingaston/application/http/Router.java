@@ -12,6 +12,10 @@ public class Router {
     public Response respond(Request request) {
         Response.Builder response = createDefaultResponse();
 
+        if (invalidRequest(request)) {
+            return sendBadRequestResponse(response);
+        }
+
         if (invalidPath(request, routes)) {
             return sendNotFoundResponse(response);
         }
@@ -33,11 +37,19 @@ public class Router {
         return response.build();
     }
 
+    private boolean invalidRequest(Request request) {
+        return request.method() == Verbs.INVALID || !request.hasHeader("Host") || request.protocol() == Version.INVALID;
+    }
+
     private Response.Builder createDefaultResponse() {
         return new Response.Builder(Status.OK)
                     .addHeader("Connection", "close");
     }
 
+    private Response sendBadRequestResponse(Response.Builder response) {
+        response.status(Status.BAD_REQUEST);
+        return response.build();
+    }
     private static void handleValidRequest(Request request, Response.Builder response, Routes routes) {
         routes.handler(request).handle(request, response);
         response.status(Status.OK);

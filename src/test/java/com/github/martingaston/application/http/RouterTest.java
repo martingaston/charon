@@ -185,13 +185,28 @@ class RouterTest {
     @DisplayName("Can handle invalid requests")
     @Nested
     class canRouteBadRequests {
-
         @DisplayName("With an invalid method")
         @Test void withInvalidMethod() {
            Request request = new Request(new RequestLine(Verbs.INVALID, URI.from("/echo_body"), Version.V1POINT1), headers, Body.from(""));
            Response response = router.respond(request);
 
            assertThat(response.status()).isEqualTo(Status.BAD_REQUEST);
+        }
+
+        @DisplayName("Without a Host header")
+        @Test void withoutHostHeader() {
+            Request request = new Request(new RequestLine(Verbs.POST, URI.from("/echo_body"), Version.V1POINT1), new Headers(), Body.from(""));
+            Response response = router.respond(request);
+
+            assertThat(response.status()).isEqualTo(Status.BAD_REQUEST);
+        }
+
+        @DisplayName("With an invalid HTTP version")
+        @Test void withInvalidVersion() {
+            Request request = new Request(new RequestLine(Verbs.POST, URI.from("/echo_body"), Version.INVALID), headers, Body.from(""));
+            Response response = router.respond(request);
+
+            assertThat(response.status()).isEqualTo(Status.BAD_REQUEST);
         }
     }
 }
