@@ -5,5 +5,5 @@ import com.github.martingaston.application.http.Response;
 
 @FunctionalInterface
 public interface Handler {
-    Response.Builder handle(Request request, Response.Builder response);
+    Response.Options handle(Request request, Response.Options response);
 }

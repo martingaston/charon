@@ -11,7 +11,7 @@ class ResponseTest {
     class canBuildResponse {
         @Test
         void builds200Response() {
-            Response response = new Response.Builder(Status.OK)
+            Response response = new Response.Options(Status.OK)
                     .addHeader("Connection", "Close")
                     .body(Body.from("Hello World"))
                     .build();
@@ -24,7 +24,7 @@ class ResponseTest {
 
         @Test
         void builds404Response() {
-            Response response = new Response.Builder(Status.NOT_FOUND).build();
+            Response response = new Response.Options(Status.NOT_FOUND).build();
 
             assertThat(response.status()).isEqualTo(Status.NOT_FOUND);
         }

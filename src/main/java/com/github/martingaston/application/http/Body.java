@@ -3,8 +3,8 @@ package com.github.martingaston.application.http;
 import java.nio.charset.StandardCharsets;
 
 public class Body {
-    private String body;
-    private int length;
+    private final String body;
+    private final int length;
 
     private Body(String body) {
         this.body = body;
